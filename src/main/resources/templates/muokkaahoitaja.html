@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Muokkaa hoitajaa</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        .form-group { margin-bottom: 15px; }
+        input { display: block; width: 100%; padding: 8px; box-sizing: border-box; }
+        button { background-color: #3498db; color: white; padding: 10px; border: none; width: 100%; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Muokkaa hoitajan tietoja</h2>
+    
+    <form th:action="@{/hoitajat}" th:object="${hoitaja}" method="post">
+        
+        <input type="hidden" th:field="*{hoitajaId}" />
+        <input type="hidden" th:field="*{passwordHash}" />
+
+        <div class="form-group">
+            <label>Etunimi</label>
+            <input type="text" th:field="*{etunimi}" required />
+        </div>
+        <div class="form-group">
+            <label>Sukunimi</label>
+            <input type="text" th:field="*{sukunimi}" required />
+        </div>
+        <div class="form-group">
+            <label>Sähköposti</label>
+            <input type="email" th:field="*{sahkoposti}" required />
+        </div>
+        <div class="form-group">
+            <label>Puhelin</label>
+            <input type="text" th:field="*{puhelin}" />
+        </div>
+        
+        <button type="submit">Tallenna muutokset</button>
+        <a href="/hoitajat" style="display:block; text-align:center; margin-top:10px;">Peruuta</a>
+    </form>
+</div>
+</body>
+</html>

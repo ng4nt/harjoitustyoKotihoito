@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kotihoidon hallinta - Hoitajat</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background-color: #f4f7f6; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        
+        .form-section { background: #e8f4fd; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .form-group { margin-bottom: 10px; }
+        input { padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 8px 15px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #2980b9; }
+
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        
+        .btn-delete { background-color: #e74c3c; font-size: 0.8em; }
+        .btn-delete:hover { background-color: #c0392b; }
+        form.inline { display: inline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Hoitajien hallintajärjestelmä</h2>
+
+    <div class="form-section">
+        <h3>Lisää uusi hoitaja</h3>
+        <form th:action="@{/hoitajat}" th:object="${hoitaja}" method="post">
+            <div class="form-group">
+                <input type="text" th:field="*{etunimi}" placeholder="Etunimi" required />
+                <input type="text" th:field="*{sukunimi}" placeholder="Sukunimi" required />
+            </div>
+            <div class="form-group">
+                <input type="email" th:field="*{sahkoposti}" placeholder="Sähköposti" required />
+                <input type="text" th:field="*{puhelin}" placeholder="Puhelin" />
+            </div>
+            <div class="form-group">
+                <input type="password" th:field="*{passwordHash}" placeholder="Salasana" required />
+            </div>
+            <button type="submit">Tallenna hoitaja</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nimi</th>
+                <th>Sähköposti</th>
+                <th>Puhelin</th>
+                <th>Toiminnot</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="h : ${hoitajat}">
+                <td th:text="${h.hoitajaId}">ID</td>
+                <td th:text="${h.etunimi + ' ' + h.sukunimi}">Nimi</td>
+                <td th:text="${h.sahkoposti}">Sähköposti</td>
+                <td th:text="${h.puhelin}">Puhelin</td>
+                <td>
+                    <a th:href="@{/hoitajat/{id}/edit(id=${h.hoitajaId})}" 
+                        style="margin-right: 10px; color: #3498db; text-decoration: none;">Muokkaa</a>
+                        
+                    <form class="inline" th:action="@{/hoitajat/{id}/delete(id=${h.hoitajaId})}" method="post">
+                        <button type="submit" class="btn-delete" 
+                                onclick="return confirm('Haluatko varmasti poistaa hoitajan?')">Poista</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
